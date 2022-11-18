@@ -1,11 +1,15 @@
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 
-export const Category = styled.View`
+const isAndroid = Platform.OS === 'android'
+
+export const Category = styled.TouchableOpacity`
 	align-items: center;
 	margin-left: 24px;
 `
 
 //calcular border-radius, circulo perfeito é a metade do tamanho do quadrado
+//propriedade elevation cria um box shadow
 export const Icon = styled.View`
 	background-color: #fff;
 	width: 44px;
@@ -14,4 +18,6 @@ export const Icon = styled.View`
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 8px;
+	box-shadow: 0 2px 1px rgba(0, 0, 0, ${isAndroid ? 1 : 0.1});
+	elevation: 2;
 `
