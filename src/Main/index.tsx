@@ -1,5 +1,6 @@
-import Categories from '../components/Categories';
 import Header from '../components/Header';
+import Button from '../components/Button';
+import Categories from '../components/Categories';
 import Menu from '../components/Menu';
 import {
 	Container,
@@ -26,7 +27,11 @@ const Main = () => {
 			</Container>
 			{/* configuracao do footer para IOS */}
 			<Footer>
-				<FooterContainer></FooterContainer>
+				<FooterContainer>
+					<Button onPress={() => alert('novo pedido')}>
+						Novo Pedido
+					</Button>
+				</FooterContainer>
 			</Footer>
 		</>
 	)
