@@ -1,7 +1,11 @@
+import { useState } from "react";
+import { ActivityIndicator } from "react-native";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import Categories from "../components/Categories";
 import Menu from "../components/Menu";
+import TableModal from "../components/TableModal";
+import Cart from "../components/Cart";
 import {
   Container,
   CategoriesContainer,
@@ -10,18 +14,18 @@ import {
   FooterContainer,
 	CenteredContainer,
 } from "./styles";
-import TableModal from "../components/TableModal";
-import { useState } from "react";
-import Cart from "../components/Cart";
 import { CartItem } from "../types/cartItem";
 import { Product } from "../types/Product";
-import { ActivityIndicator } from "react-native";
+import { products as MockProducts } from "../mocks/products";
+import { Empty } from "../components/Icons/Empty";
+import { Text } from "../components/Text";
 
 const Main = () => {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState("");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); //mudar para false
+	const [products] = useState<Product[]>(/*[]*/MockProducts)
 
   const handleSaveTable = (table: string) => {
     setSelectedTable(table);
@@ -101,9 +105,19 @@ const Main = () => {
               <Categories />
             </CategoriesContainer>
 
-            <MenuContainer>
-              <Menu onAddToCart={handleAddToCart} />
-            </MenuContainer>
+						{products.length > 0 ? (
+							<MenuContainer>
+								<Menu
+									products={products}
+									onAddToCart={handleAddToCart}
+								/>
+							</MenuContainer>
+						): (
+							<CenteredContainer>
+								<Empty />
+								<Text color="#666" style={{ marginTop: 24 }}>Nenhum produto foi encontrado</Text>
+							</CenteredContainer>
+						)}
           </>
         )}
       </Container>
