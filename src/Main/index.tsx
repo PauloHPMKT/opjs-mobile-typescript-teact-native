@@ -10,8 +10,16 @@ import {
 	FooterContainer
 } from './styles';
 import TableModal from '../components/TableModal';
+import { useState } from 'react';
 
 const Main = () => {
+	const [isTableModalVisible, setIsTableModalVisible] = useState(false)
+	const [selectedTable, setSelectedTable] = useState('')
+
+	const handleSaveTable = (table: string) => {
+		setSelectedTable(table)
+	}
+
 	return(
 		<>
 			<Container>
@@ -28,13 +36,20 @@ const Main = () => {
 			{/* configuracao do footer para IOS */}
 			<Footer>
 				<FooterContainer>
-					<Button onPress={() => alert('novo pedido')}>
-						Novo Pedido
-					</Button>
+					{!selectedTable && (
+						<Button onPress={() => setIsTableModalVisible(true)}>
+							Novo Pedido
+						</Button>
+					)}
 				</FooterContainer>
 			</Footer>
 
-			<TableModal />
+			<TableModal
+				onClose={() => setIsTableModalVisible(false)}
+				visible={isTableModalVisible}
+				//essa funcao pode ser compartilhada entre componentes
+				onSave={handleSaveTable}
+			/>
 		</>
 	)
 }
