@@ -33,7 +33,48 @@ const Main = () => {
 			setIsTableModalVisible(true)
 		}
 
-		alert(product.name)
+		setCartItems(prevState => {
+			const itemIndex = prevState.findIndex(cartItem => cartItem.product._id === product._id)
+
+			if (itemIndex < 0) {
+				return prevState.concat({
+					quantity: 1,
+					product,
+				})
+			}
+
+			const newCartItems = [...prevState]
+			const item = newCartItems[itemIndex]
+			newCartItems[itemIndex] ={
+				...item,
+				quantity: item.quantity + 1
+			}
+
+			return newCartItems
+		})
+	}
+
+	const handleDecreaseCartItem = (product: Product) => {
+		setCartItems(prevState => {
+			const itemIndex = prevState.findIndex(cartItem => cartItem.product._id === product._id)
+			const item = prevState[itemIndex]
+			const newCartItems = [...prevState]
+
+
+			if (item.quantity === 1) {
+				newCartItems.splice(itemIndex, 1) //de ela, para ela mesma
+
+				return newCartItems
+			}
+
+			newCartItems[itemIndex] ={
+				...item,
+				quantity: item.quantity - 1
+			}
+
+			return newCartItems
+
+		})
 	}
 
 	return(
@@ -62,7 +103,11 @@ const Main = () => {
 					)}
 
 					{selectedTable && (
-						<Cart cartItems={cartItems}/>
+						<Cart
+							onAdd={handleAddToCart}
+							onRemove={handleDecreaseCartItem}
+							cartItems={cartItems}
+						/>
 					)}
 				</FooterContainer>
 			</Footer>

@@ -1,4 +1,3 @@
-//text é um componente proprio com estruturas personalizadas
 import { TouchableOpacity } from "react-native";
 import { Text } from "../Text"
 import { Container, OrderHeaderContent, OrderHeader, Table } from "./styles"

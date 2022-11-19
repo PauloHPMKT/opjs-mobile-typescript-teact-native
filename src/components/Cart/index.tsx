@@ -1,5 +1,6 @@
 import { FlatList, TouchableOpacity } from "react-native";
 import { CartItem } from "../../types/cartItem";
+import { Product } from "../../types/Product";
 import { formatCurrency } from "../../utils/formatCurrency";
 import Button from "../Button";
 import { MinusCircle } from "../Icons/MinusCircle";
@@ -18,9 +19,15 @@ import {
 
 interface CartProps {
   cartItems: CartItem[];
+	onAdd: (product: Product) => void;
+	onRemove: (product: Product) => void;
 }
 
-const Cart = ({ cartItems }: CartProps) => {
+const Cart = ({ cartItems, onAdd, onRemove }: CartProps) => {
+	const total = cartItems.reduce((total, cartItem) => {
+		return total + cartItem.quantity * cartItem.product.price
+	}, 0)
+
   return (
     <>
       {cartItems.length > 0 && (
@@ -31,33 +38,36 @@ const Cart = ({ cartItems }: CartProps) => {
           style={{ marginBottom: 20, maxHeight: 150 }}
           renderItem={({ item: cartItem }) => (
             <Item>
-              <ProductItem>
-                <Image
-                  source={{
-                    uri: `http://192.168.1.7:3008/uploads/${cartItem.product.imagePath}`,
-                  }}
-                />
-                <QuantityContainer>
-                  <Text size={14} color="#666">
-                    {cartItem.quantity}x
-                  </Text>
-                </QuantityContainer>
+							<ProductItem>
+								<Image
+									source={{
+										uri: `http://192.168.1.7:3008/uploads/${cartItem.product.imagePath}`,
+									}}
+								/>
+								<QuantityContainer>
+									<Text size={14} color="#666">
+										{cartItem.quantity}x
+									</Text>
+								</QuantityContainer>
 
-                <ProductDetails>
-                  <Text size={14} weight="600">
-                    {cartItem.product.name}
-                  </Text>
-                  <Text size={14} color="#666" style={{ marginTop: 4 }}>
-                    {formatCurrency(cartItem.product.price)}
-                  </Text>
-                </ProductDetails>
-              </ProductItem>
+								<ProductDetails>
+									<Text size={14} weight="600">
+										{cartItem.product.name}
+									</Text>
+									<Text size={14} color="#666" style={{ marginTop: 4 }}>
+										{formatCurrency(cartItem.product.price)}
+									</Text>
+								</ProductDetails>
+							</ProductItem>
 
               <Actions>
-                <TouchableOpacity style={{ marginRight: 24 }}>
+                <TouchableOpacity
+									onPress={() => onAdd(cartItem.product)}
+									style={{ marginRight: 24 }}
+								>
                   <PlusCircle />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => onRemove(cartItem.product)}>
                   <MinusCircle />
                 </TouchableOpacity>
               </Actions>
@@ -72,7 +82,7 @@ const Cart = ({ cartItems }: CartProps) => {
             <>
               <Text color="#666">Total</Text>
               <Text size={20} weight="600">
-                {formatCurrency(120)}
+                {formatCurrency(total)}
               </Text>
             </>
           ) : (
