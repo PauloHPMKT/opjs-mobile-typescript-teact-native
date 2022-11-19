@@ -9,6 +9,7 @@ import {
 	Footer,
 	FooterContainer
 } from './styles';
+import TableModal from '../components/TableModal';
 
 const Main = () => {
 	return(
@@ -23,7 +24,6 @@ const Main = () => {
 				<MenuContainer>
 					<Menu />
 				</MenuContainer>
-
 			</Container>
 			{/* configuracao do footer para IOS */}
 			<Footer>
@@ -33,6 +33,8 @@ const Main = () => {
 					</Button>
 				</FooterContainer>
 			</Footer>
+
+			<TableModal />
 		</>
 	)
 }
