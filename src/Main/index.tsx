@@ -11,10 +11,14 @@ import {
 } from './styles';
 import TableModal from '../components/TableModal';
 import { useState } from 'react';
+import Cart from '../components/Cart';
+import { CartItem } from '../types/cartItem';
+import { Product } from '../types/Product';
 
 const Main = () => {
 	const [isTableModalVisible, setIsTableModalVisible] = useState(false)
 	const [selectedTable, setSelectedTable] = useState('')
+	const [cartItems, setCartItems] = useState<CartItem[]>([])
 
 	const handleSaveTable = (table: string) => {
 		setSelectedTable(table)
@@ -22,6 +26,14 @@ const Main = () => {
 
 	const handleCancelOrder = () => {
 		setSelectedTable('')
+	}
+
+	const handleAddToCart = (product: Product) => {
+		if (!selectedTable) {
+			setIsTableModalVisible(true)
+		}
+
+		alert(product.name)
 	}
 
 	return(
@@ -37,7 +49,7 @@ const Main = () => {
 				</CategoriesContainer>
 
 				<MenuContainer>
-					<Menu />
+					<Menu onAddToCart={handleAddToCart}/>
 				</MenuContainer>
 			</Container>
 			{/* configuracao do footer para IOS */}
@@ -47,6 +59,10 @@ const Main = () => {
 						<Button onPress={() => setIsTableModalVisible(true)}>
 							Novo Pedido
 						</Button>
+					)}
+
+					{selectedTable && (
+						<Cart cartItems={cartItems}/>
 					)}
 				</FooterContainer>
 			</Footer>

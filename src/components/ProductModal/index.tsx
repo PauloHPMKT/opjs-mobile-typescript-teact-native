@@ -20,12 +20,18 @@ interface ProductModalProps {
 	visible: boolean;
 	onClose: () => void;
 	product: null | Product;
+	onAddToCart: (product: Product) => void;
 }
 
-const ProductModal = ({ visible, onClose, product }: ProductModalProps) => {
+const ProductModal = ({ visible, onClose, product, onAddToCart }: ProductModalProps) => {
 	// usa optional para acessar o modal somente caso exista um produto
 	if (!product) {
 		return null
+	}
+
+	const handleAddToCart = () => {
+		onAddToCart(product!) // non-null assertion informa que sempre haverá uma assercao verdadeira
+		onClose()
 	}
 
 	return(
@@ -76,7 +82,7 @@ const ProductModal = ({ visible, onClose, product }: ProductModalProps) => {
 						<Text color="#666">Preco</Text>
 						<Text size={20} weight="600">{formatCurrency(product.price)}</Text>
 					</PriceContainer>
-					<Button onPress={() => alert('adicionar ao pedido')}>
+					<Button onPress={handleAddToCart}>
 						Adicionar ao pedido
 					</Button>
 				</FooterContainer>
