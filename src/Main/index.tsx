@@ -173,6 +173,7 @@ const Main = () => {
 
           {selectedTable && (
             <Cart
+							selectedTable={selectedTable}
               onAdd={handleAddToCart}
               onRemove={handleDecreaseCartItem}
               cartItems={cartItems}
