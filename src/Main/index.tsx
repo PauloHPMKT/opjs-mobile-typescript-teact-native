@@ -1,127 +1,143 @@
-import Header from '../components/Header';
-import Button from '../components/Button';
-import Categories from '../components/Categories';
-import Menu from '../components/Menu';
+import Header from "../components/Header";
+import Button from "../components/Button";
+import Categories from "../components/Categories";
+import Menu from "../components/Menu";
 import {
-	Container,
-	CategoriesContainer,
-	MenuContainer,
-	Footer,
-	FooterContainer
-} from './styles';
-import TableModal from '../components/TableModal';
-import { useState } from 'react';
-import Cart from '../components/Cart';
-import { CartItem } from '../types/cartItem';
-import { Product } from '../types/Product';
+  Container,
+  CategoriesContainer,
+  MenuContainer,
+  Footer,
+  FooterContainer,
+	CenteredContainer,
+} from "./styles";
+import TableModal from "../components/TableModal";
+import { useState } from "react";
+import Cart from "../components/Cart";
+import { CartItem } from "../types/cartItem";
+import { Product } from "../types/Product";
+import { ActivityIndicator } from "react-native";
 
 const Main = () => {
-	const [isTableModalVisible, setIsTableModalVisible] = useState(false)
-	const [selectedTable, setSelectedTable] = useState('')
-	const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [isTableModalVisible, setIsTableModalVisible] = useState(false);
+  const [selectedTable, setSelectedTable] = useState("");
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-	const handleSaveTable = (table: string) => {
-		setSelectedTable(table)
-	}
+  const handleSaveTable = (table: string) => {
+    setSelectedTable(table);
+  };
 
-	const handleResetOrder = () => {
-		setSelectedTable('')
-		setCartItems([])
-	}
+  const handleResetOrder = () => {
+    setSelectedTable("");
+    setCartItems([]);
+  };
 
-	const handleAddToCart = (product: Product) => {
-		if (!selectedTable) {
-			setIsTableModalVisible(true)
-		}
+  const handleAddToCart = (product: Product) => {
+    if (!selectedTable) {
+      setIsTableModalVisible(true);
+    }
 
-		setCartItems(prevState => {
-			const itemIndex = prevState.findIndex(cartItem => cartItem.product._id === product._id)
+    setCartItems((prevState) => {
+      const itemIndex = prevState.findIndex(
+        (cartItem) => cartItem.product._id === product._id
+      );
 
-			if (itemIndex < 0) {
-				return prevState.concat({
-					quantity: 1,
-					product,
-				})
-			}
+      if (itemIndex < 0) {
+        return prevState.concat({
+          quantity: 1,
+          product,
+        });
+      }
 
-			const newCartItems = [...prevState]
-			const item = newCartItems[itemIndex]
-			newCartItems[itemIndex] ={
-				...item,
-				quantity: item.quantity + 1
-			}
+      const newCartItems = [...prevState];
+      const item = newCartItems[itemIndex];
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity + 1,
+      };
 
-			return newCartItems
-		})
-	}
+      return newCartItems;
+    });
+  };
 
-	const handleDecreaseCartItem = (product: Product) => {
-		setCartItems(prevState => {
-			const itemIndex = prevState.findIndex(cartItem => cartItem.product._id === product._id)
-			const item = prevState[itemIndex]
-			const newCartItems = [...prevState]
+  const handleDecreaseCartItem = (product: Product) => {
+    setCartItems((prevState) => {
+      const itemIndex = prevState.findIndex(
+        (cartItem) => cartItem.product._id === product._id
+      );
+      const item = prevState[itemIndex];
+      const newCartItems = [...prevState];
 
+      if (item.quantity === 1) {
+        newCartItems.splice(itemIndex, 1); //de ela, para ela mesma
 
-			if (item.quantity === 1) {
-				newCartItems.splice(itemIndex, 1) //de ela, para ela mesma
+        return newCartItems;
+      }
 
-				return newCartItems
-			}
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity - 1,
+      };
 
-			newCartItems[itemIndex] ={
-				...item,
-				quantity: item.quantity - 1
-			}
+      return newCartItems;
+    });
+  };
 
-			return newCartItems
+  return (
+    <>
+      <Container>
+        <Header
+          selectedTable={selectedTable}
+          onCancelOrder={handleResetOrder}
+        />
+				{isLoading && (
+					<CenteredContainer>
+						<ActivityIndicator color="#d73035" size="large"/>
+					</CenteredContainer>
+				)}
+        {!isLoading && (
+          <>
+            <CategoriesContainer>
+              <Categories />
+            </CategoriesContainer>
 
-		})
-	}
+            <MenuContainer>
+              <Menu onAddToCart={handleAddToCart} />
+            </MenuContainer>
+          </>
+        )}
+      </Container>
+      {/* configuracao do footer para IOS */}
+      <Footer>
+        <FooterContainer>
+          {!selectedTable && (
+            <Button
+							disabled={isLoading}
+							onPress={() => setIsTableModalVisible(true)}
+						>
+              Novo Pedido
+            </Button>
+          )}
 
-	return(
-		<>
-			<Container>
-				<Header
-					selectedTable={selectedTable}
-					onCancelOrder={handleResetOrder}
-				/>
+          {selectedTable && (
+            <Cart
+              onAdd={handleAddToCart}
+              onRemove={handleDecreaseCartItem}
+              cartItems={cartItems}
+              onConfirmOrder={handleResetOrder}
+            />
+          )}
+        </FooterContainer>
+      </Footer>
 
-				<CategoriesContainer>
-					<Categories />
-				</CategoriesContainer>
+      <TableModal
+        onClose={() => setIsTableModalVisible(false)}
+        visible={isTableModalVisible}
+        //essa funcao pode ser compartilhada entre componentes
+        onSave={handleSaveTable}
+      />
+    </>
+  );
+};
 
-				<MenuContainer>
-					<Menu onAddToCart={handleAddToCart}/>
-				</MenuContainer>
-			</Container>
-			{/* configuracao do footer para IOS */}
-			<Footer>
-				<FooterContainer>
-					{!selectedTable && (
-						<Button onPress={() => setIsTableModalVisible(true)}>
-							Novo Pedido
-						</Button>
-					)}
-
-					{selectedTable && (
-						<Cart
-							onAdd={handleAddToCart}
-							onRemove={handleDecreaseCartItem}
-							cartItems={cartItems}
-							onConfirmOrder={handleResetOrder}
-						/>
-					)}
-				</FooterContainer>
-			</Footer>
-
-			<TableModal
-				onClose={() => setIsTableModalVisible(false)}
-				visible={isTableModalVisible}
-				//essa funcao pode ser compartilhada entre componentes
-				onSave={handleSaveTable}
-			/>
-		</>
-	)
-}
-
-export default Main
+export default Main;

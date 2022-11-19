@@ -27,6 +27,7 @@ interface CartProps {
 }
 
 const Cart = ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) => {
+	const [isLoading, setIsLoading] =  useState(false)
 	const [isModalConfirmVisible, setIsModalConfirmVisible] = useState(false)
 
 	const total = cartItems.reduce((total, cartItem) => {
@@ -111,6 +112,7 @@ const Cart = ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) => {
         <Button
 					onPress={handleConfirmOrder}
 					disabled={cartItems.length === 0}
+					loading={isLoading}
 				>
           Confirmar pedido
         </Button>
