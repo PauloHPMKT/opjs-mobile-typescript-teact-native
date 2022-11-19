@@ -16,16 +16,17 @@ import {
 } from "./styles";
 import { CartItem } from "../types/cartItem";
 import { Product } from "../types/Product";
-import { products as MockProducts } from "../mocks/products";
 import { Empty } from "../components/Icons/Empty";
 import { Text } from "../components/Text";
+import { Category } from "../types/Category";
 
 const Main = () => {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState("");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false); //mudar para false
-	const [products] = useState<Product[]>(/*[]*/MockProducts)
+	const [products] = useState<Product[]>([])
+	const [categories] = useState<Category[]>([])
 
   const handleSaveTable = (table: string) => {
     setSelectedTable(table);
@@ -102,7 +103,7 @@ const Main = () => {
         {!isLoading && (
           <>
             <CategoriesContainer>
-              <Categories />
+              <Categories categories={categories}/>
             </CategoriesContainer>
 
 						{products.length > 0 ? (
