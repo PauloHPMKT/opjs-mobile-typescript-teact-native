@@ -17,7 +17,7 @@ const Menu = () => {
 				<Product>
 					<ProductImage
 						source={{
-							uri: `http://192.168.1.7:19000/uploads/${product.imagePath}`,
+							uri: `http://192.168.1.7:3008/uploads/${product.imagePath}`,
 						}}
 					/>
 					<ProductDetails>

@@ -8,16 +8,17 @@ import { useState } from "react"
 
 const isAndoid = Platform.OS === 'android' ? 'height' : 'padding'
 
-interface TableMofalProps {
+interface TableModalProps {
 	visible: boolean;
 	onClose: () => void;
 	onSave: (table: string) => void;
 }
 
-const TableModal = ({ visible, onClose, onSave }: TableMofalProps) => {
+const TableModal = ({ visible, onClose, onSave }: TableModalProps) => {
 	const [table, setTable] = useState('')
 
 	const handleSave = () => {
+		setTable('') //setando btn modal para vazio
 		onSave(table)
 		onClose()
 	}
