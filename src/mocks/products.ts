@@ -5,7 +5,7 @@ export const products = [
     description: 'Deliciosa pizza quatro queijos com borda simples',
     imagePath: '1668551835332-burguer-banner.jpg',
     price: 40,
-    ingredients: [
+    ingredient: [
       {
         name: 'Mussarela',
         icon: '🧀',

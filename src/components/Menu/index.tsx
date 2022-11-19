@@ -62,7 +62,7 @@ const Menu = ({ onAddToCart, products }: MenuProps) => {
                 color="#333"
                 style={{ marginVertical: 8 }}
               >
-                {formatCurrency(product.price)}
+                {formatCurrency(product.pricing)}
               </Text>
             </ProductDetails>
 

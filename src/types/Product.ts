@@ -3,8 +3,8 @@ export interface Product {
 	name: string;
 	description: string;
 	imagePath: string;
-	price: number;
-	ingredients: {
+	pricing: number;
+	ingredient: {
 		name: string;
 		icon: string;
 		_id: string;

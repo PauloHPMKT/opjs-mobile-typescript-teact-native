@@ -58,11 +58,11 @@ const ProductModal = ({ visible, onClose, product, onAddToCart }: ProductModalPr
 					<Text weight="400" size={16} color="#666" style={{ marginTop: 8 }}>{product.description}</Text>
 				</Header>
 
-					{product.ingredients.length > 0 && (
+					{product.ingredient.length > 0 && (
 						<IngredientsContainer>
 							<Text weight="600" color="#666">Ingredientes</Text>
 							<FlatList
-								data={product.ingredients}
+								data={product.ingredient}
 								keyExtractor={ingredient => ingredient._id}
 								showsVerticalScrollIndicator={false}
 								style={{  marginTop: 16 }}
@@ -80,7 +80,7 @@ const ProductModal = ({ visible, onClose, product, onAddToCart }: ProductModalPr
 				<FooterContainer>
 					<PriceContainer>
 						<Text color="#666">Preco</Text>
-						<Text size={20} weight="600">{formatCurrency(product.price)}</Text>
+						<Text size={20} weight="600">{formatCurrency(product.pricing)}</Text>
 					</PriceContainer>
 					<Button onPress={handleAddToCart}>
 						Adicionar ao pedido

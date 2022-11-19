@@ -31,7 +31,7 @@ const Cart = ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) => {
 	const [isModalConfirmVisible, setIsModalConfirmVisible] = useState(false)
 
 	const total = cartItems.reduce((total, cartItem) => {
-		return total + cartItem.quantity * cartItem.product.price
+		return total + cartItem.quantity * cartItem.product.pricing
 	}, 0)
 
 	const handleConfirmOrder = () => {
@@ -75,7 +75,7 @@ const Cart = ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) => {
 										{cartItem.product.name}
 									</Text>
 									<Text size={14} color="#666" style={{ marginTop: 4 }}>
-										{formatCurrency(cartItem.product.price)}
+										{formatCurrency(cartItem.product.pricing)}
 									</Text>
 								</ProductDetails>
 							</ProductItem>
