@@ -44,7 +44,7 @@ const ProductModal = ({ visible, onClose, product, onAddToCart }: ProductModalPr
 		>
 			<Image
 				source={{
-					uri: `http://192.168.1.7:3008/uploads/${product.imagePath}`,
+					uri: `http://10.0.0.137:3008/uploads/${product.imagePath}`,
 				 }}
 			>
 				<CloseButton onPress={onClose}>
